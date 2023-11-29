@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airtable Example</title>
+    <script type="text/javascript" src="/ruxitagentjs_ICA2NVfqru_10277231024135831.js"
+        data-dtconfig="rid=RID_1660848950|rpid=1569496188|domain=byu.edu|reportUrl=https://bf19966hyx.bf.dynatrace.com/bf|app=718d108ceb0c6349|cors=1|featureHash=ICA2NVfqru|vcv=2|rdnt=1|uxrgce=1|bp=3|cuc=lg366a9h|mel=100000|dpvc=1|ssv=4|lastModification=1701299111252|tp=500,50,0,1|agentUri=/ruxitagentjs_ICA2NVfqru_10277231024135831.js"></script>
+</head>
+<script>
+    async function get_data() {
+        const gas_end_point = "https://script.google.com/macros/s/AKfycbxd2Oh1ijbKmAxGZP2AWvZGc7Ma5HJCX0TFiUunqcRjYgwcHzrnf68S2bv52P7iMmus/exec"// this looks like https://script.google.com/macros/s/AKfycbyMEdzgHBBlRYvkcHKg4WOQJz0PA2y3UbFsa3t5XJae1DPtXoqqdUPoWG4vItT4G-WTgT/exec
+        const data_set = "itemList"
+
+
+        const reply = await fetch(gas_end_point + "?data_set=" + data_set)
+        //The request is made of Google App Script and the response is set to "response"
+        const response = await reply.json()
+        console.log("in get data", response)
+        const html = ["<table border=1>"]
+
+        // add the Heading
+        html.push("<tr>")
+        for (col of response.shift()) {
+            html.push("<th>")
+            html.push(col)
+            html.push("</th>")
+        }
+        html.push("</tr>")
+
+
+        for (const row of response) {
+            html.push("<tr>")
+            for (col of row) {
+                html.push("<td>")
+                html.push(col)
+                html.push("</td>")
+            }
+            html.push("</tr>")
+        }
+        html.push("</table>")
+        document.getElementById("data-table").innerHTML = html.join("")
+    }
+
+</script>
+
+<body onload="get_data()">
+    <div>This is an example of getting data from airtable through Google Apps Script</div>
+    <div id="data-table">Loading data ...</div>
+
+</body>
+
+</html>
